@@ -76,7 +76,7 @@ module pi3()
   }
 }
 
-module hifiberryDacPlus()
+module hifiberryDacPlus(withHeader=false)
 {  
   translate([0,0,13.4])
   {
@@ -117,8 +117,9 @@ module hifiberryDacPlus()
     }
     
     // Header top
-    translate([3.5-85/2+29-10*2.54,49/2-2.54-2*2.54,1.4])
-      header(20,2);
+    if( withHeader )
+      translate([3.5-85/2+29-10*2.54,49/2-2.54-2*2.54,1.4])
+        header(20,2);
 
   }
 }
