@@ -6,7 +6,7 @@
 $fn=100;
 
 // Which one would you like to see?
-part = "piZero"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,pi3_hifiberryDacPlus:Raspberry PI3 & HifiBerry DAC+,piZero:Raspberry PI Zero]
+part = "speakerPhat"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,pi3_hifiberryDacPlus:Raspberry PI3 & HifiBerry DAC+,piZero:Raspberry PI Zero,speakerPhat:Pimoroni Speaker pHAT]
 
 // Show Header
 header = true; // true:Show Header;false:Don't show Header
@@ -16,7 +16,7 @@ headerDown = false; //true: Header down (Only Zero): false Header up
 
 module header(pins, rows)
 {
-  color("darkgrey") cube([2.54*pins,2.54*rows,1.27]);
+  color("darkgrey") cube([2.54*pins,2.54*rows,2.54]);
   
   for(x=[0:pins-1],y=[0:rows-1])
     translate([x*2.54+(1.27+.6)/2,y*2.54+(1.27+.6)/2,-3.5]) cube([0.6,0.6,11.5]);
@@ -179,6 +179,31 @@ module zero( header= 0)
   }
 }
 
+module speakerPhat()
+{
+  // PCB
+  translate([0,0,12]) color("darkgreen") difference()
+  {
+    hull()
+    {
+      translate([-(65-6)/2,-(30-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([-(65-6)/2, (30-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([ (65-6)/2,-(30-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([ (65-6)/2, (30-6)/2,0]) cylinder(r=3, h=1.4 );
+    }
+    
+    translate([-65/2+3.5,-23/2,-1]) cylinder(d=2.75, h=3);
+    translate([-65/2+3.5, 23/2,-1]) cylinder(d=2.75, h=3);
+    translate([65/2-3.5,-23/2,-1]) cylinder(d=2.75, h=3);
+    translate([65/2-3.5, 23/2,-1]) cylinder(d=2.75, h=3);
+  }
+  
+  //translate([3.5-85/2+29-10*2.54,49/2-2.54,-8])
+  translate([3.5-65/2+29-10*2.54,30/2-3.5-2.54,3.78])
+    color("darkgrey") cube([2.54*20,5.08,8.2]);
+}
+
+
 if( part == "pi3")
   pi3();
 else if( part == "hifiberryDacPlus")
@@ -190,3 +215,5 @@ else if( part == "pi3_hifiberryDacPlus")
 }
 else if( part == "piZero")
   zero(header ? (headerDown ? -1 : 1) : 0);
+else if( part == "speakerPhat")
+  speakerPhat();
