@@ -14,3 +14,11 @@ hifiberryDacPlus();` Combining both
 `zero();`Raspberry PI Zero, add argument 1 for Header, or -1 for Header downwards
 
 ![PI Zero](https://github.com/saarbastler/library.scad/raw/master/doc/pizero.png)
+
+`pi4();`Raspberry PI 4
+
+![PI4](https://github.com/saarbastler/library.scad/raw/master/doc/pi4.png)
+
+`speakerPhat();`Pimoroni SPeaker pHAT (here with Raspberry PI Zero)
+
+![speakerPhat](https://github.com/saarbastler/library.scad/raw/master/doc/phat.png)
