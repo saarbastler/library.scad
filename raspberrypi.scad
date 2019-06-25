@@ -6,7 +6,7 @@
 $fn=100;
 
 // Which one would you like to see?
-part = "speakerPhat"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,pi3_hifiberryDacPlus:Raspberry PI3 & HifiBerry DAC+,piZero:Raspberry PI Zero,speakerPhat:Pimoroni Speaker pHAT]
+part = "pi4"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,pi3_hifiberryDacPlus:Raspberry PI3 & HifiBerry DAC+,piZero:Raspberry PI Zero,speakerPhat:Pimoroni Speaker pHAT,pi4:Raspberry PI4]
 
 // Show Header
 header = true; // true:Show Header;false:Don't show Header
@@ -203,6 +203,61 @@ module speakerPhat()
     color("darkgrey") cube([2.54*20,5.08,8.2]);
 }
 
+module pi4()
+{
+  // PCB
+  color("limegreen") difference()
+  {
+    hull()
+    {
+      translate([-(85-6)/2,-(56-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([-(85-6)/2, (56-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([ (85-6)/2,-(56-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([ (85-6)/2, (56-6)/2,0]) cylinder(r=3, h=1.4 );
+    }
+    translate([-85/2+3.5,-49/2,-1]) cylinder(d=2.75, h=3);
+    translate([-85/2+3.5, 49/2,-1]) cylinder(d=2.75, h=3);
+    translate([58-85/2+3.5,-49/2,-1]) cylinder(d=2.75, h=3);
+    translate([58-85/2+3.5, 49/2,-1]) cylinder(d=2.75, h=3);
+  }
+
+  // Header
+  translate([3.5-85/2+29-10*2.54,49/2-2.54,1.4])
+  header(20,2);
+
+  translate([-85/2,-56/2,1.4])
+  {
+    color("silver")
+    {
+      // Ethernet
+      translate([85-19, 45.75-13.5/2,0]) cube([21,16,13.5]);
+      // USB
+      translate([85-15, 9-16/2,0]) cube([17,13,16]);
+      translate([85-15, 27-16/2,0]) cube([17,13,16]);
+      // USB C
+      translate([3.5+7.7-8.94/2,-1.5,0]) cube([8.94,8.75,3.16]);
+      // Mini HDMI
+      translate([3.5+7.7+14.8-6.5/2,-1.5,0]) cube([6.5,7.5,2.9]);
+      translate([3.5+7.7+14.8+13.5-6.5/2,-1.5,0]) cube([6.5,7.5,2.9]);
+    }
+    color("darkgrey")
+    {
+      // Audio
+      translate([3.5+7.7+14.8+13.5+7+7.5-7/2,-2,0])
+      {
+        translate([0,2,0]) cube([7,13,5.6]);
+        translate([7/2,0,5.6/2])rotate([-90,0,0]) cylinder(d=5.6,h=2);
+      }
+      // Display
+      translate([1.1,(49-22)/2,0]) cube([4,22,5.5]);
+      // Camera
+      translate([3.5+7.7+14.8+13.5+7-4/2,1.1,0]) cube([4,22,5.5]);
+    }
+    // Micro SD Card
+    color("silver") translate([0,22,-2.9]) cube([13,14,1.5]);
+    color("darkgrey") translate([-2.4,23.5,-2.65]) cube([2.4,11,1]);
+  }
+}
 
 if( part == "pi3")
   pi3();
@@ -217,3 +272,5 @@ else if( part == "piZero")
   zero(header ? (headerDown ? -1 : 1) : 0);
 else if( part == "speakerPhat")
   speakerPhat();
+else if( part == "pi4")
+  pi4();
