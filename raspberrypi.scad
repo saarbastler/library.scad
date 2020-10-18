@@ -6,10 +6,10 @@
 $fn=100;
 
 // Which one would you like to see?
-part = "pi3"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,piZero:Raspberry PI Zero,pi4:Raspberry PI4]
+part = "piZero"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,piZero:Raspberry PI Zero,pi4:Raspberry PI4]
 
 // Show a Hat on PI
-hat = "hifiberryDacPlus"; // [hifiberryDacPlus:HifiBerry DAC+,speakerPhat:Pimoroni Speaker pHAT]
+hat = "raspBee2"; // [hifiberryDacPlus:HifiBerry DAC+,speakerPhat:Pimoroni Speaker pHAT,raspBee2: RaspBee 2 ZigBee Hat]
 
 // Show Header
 header = true; // true:Show Header;false:Don't show Header
@@ -209,6 +209,16 @@ module speakerPhat(offset=[0,0,0])
   }
 }
 
+module raspbee2(offset=[0,0,0])
+{
+  translate(offset)
+  {
+    translate([-36.5,-2,12]) color("RoyalBlue") cube([17.5, 30, 1.5]);
+    
+    translate([-35.4, 22,3.78])
+      color("darkgrey") cube([2.54*6,5.08,8.2]);
+  }
+}
 
 module pi4()
 {
@@ -298,4 +308,6 @@ if( hat == "hifiberryDacPlus")
   hifiberryDacPlus(offset, header);
 else if( hat == "speakerPhat")
   speakerPhat(offset);
+else if( hat == "raspBee2")
+  raspbee2(offset);
   
