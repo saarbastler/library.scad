@@ -6,7 +6,10 @@
 $fn=100;
 
 // Which one would you like to see?
-part = "pi4"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,pi3_hifiberryDacPlus:Raspberry PI3 & HifiBerry DAC+,piZero:Raspberry PI Zero,speakerPhat:Pimoroni Speaker pHAT,pi4:Raspberry PI4]
+part = "pi3"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,piZero:Raspberry PI Zero,pi4:Raspberry PI4]
+
+// Show a Hat on PI
+hat = "hifiberryDacPlus"; // [hifiberryDacPlus:HifiBerry DAC+,speakerPhat:Pimoroni Speaker pHAT]
 
 // Show Header
 header = true; // true:Show Header;false:Don't show Header
@@ -85,9 +88,9 @@ module pi3()
   }
 }
 
-module hifiberryDacPlus(withHeader=false)
+module hifiberryDacPlus(offset=[0,0,0], withHeader=false)
 {  
-  translate([0,0,13.4])
+  translate(offset) translate([0,0,13.4])
   {
     // PCB
     color("limegreen") difference()
@@ -179,29 +182,33 @@ module zero( header= 0)
   }
 }
 
-module speakerPhat()
+module speakerPhat(offset=[0,0,0])
 {
-  // PCB
-  translate([0,0,12]) color("darkgreen") difference()
+  translate(offset) translate([-10,13,0])
   {
-    hull()
+    // PCB
+    translate([0,0,12]) color("darkgreen") difference()
     {
-      translate([-(65-6)/2,-(30-6)/2,0]) cylinder(r=3, h=1.4 );
-      translate([-(65-6)/2, (30-6)/2,0]) cylinder(r=3, h=1.4 );
-      translate([ (65-6)/2,-(30-6)/2,0]) cylinder(r=3, h=1.4 );
-      translate([ (65-6)/2, (30-6)/2,0]) cylinder(r=3, h=1.4 );
+      hull()
+      {
+        translate([-(65-6)/2,-(30-6)/2,0]) cylinder(r=3, h=1.4 );
+        translate([-(65-6)/2, (30-6)/2,0]) cylinder(r=3, h=1.4 );
+        translate([ (65-6)/2,-(30-6)/2,0]) cylinder(r=3, h=1.4 );
+        translate([ (65-6)/2, (30-6)/2,0]) cylinder(r=3, h=1.4 );
+      }
+      
+      translate([-65/2+3.5,-23/2,-1]) cylinder(d=2.75, h=3);
+      translate([-65/2+3.5, 23/2,-1]) cylinder(d=2.75, h=3);
+      translate([65/2-3.5,-23/2,-1]) cylinder(d=2.75, h=3);
+      translate([65/2-3.5, 23/2,-1]) cylinder(d=2.75, h=3);
     }
     
-    translate([-65/2+3.5,-23/2,-1]) cylinder(d=2.75, h=3);
-    translate([-65/2+3.5, 23/2,-1]) cylinder(d=2.75, h=3);
-    translate([65/2-3.5,-23/2,-1]) cylinder(d=2.75, h=3);
-    translate([65/2-3.5, 23/2,-1]) cylinder(d=2.75, h=3);
+    //translate([3.5-85/2+29-10*2.54,49/2-2.54,-8])
+    translate([3.5-65/2+29-10*2.54,30/2-3.5-2.54,3.78])
+      color("darkgrey") cube([2.54*20,5.08,8.2]);
   }
-  
-  //translate([3.5-85/2+29-10*2.54,49/2-2.54,-8])
-  translate([3.5-65/2+29-10*2.54,30/2-3.5-2.54,3.78])
-    color("darkgrey") cube([2.54*20,5.08,8.2]);
 }
+
 
 module pi4()
 {
@@ -260,17 +267,35 @@ module pi4()
 }
 
 if( part == "pi3")
+{
   pi3();
+}
 else if( part == "hifiberryDacPlus")
+{
   hifiberryDacPlus(header);
+}
 else if( part == "pi3_hifiberryDacPlus")
 {
   pi3();
   hifiberryDacPlus(header);
 }
 else if( part == "piZero")
+{
   zero(header ? (headerDown ? -1 : 1) : 0);
+}
 else if( part == "speakerPhat")
+{
   speakerPhat();
+}
 else if( part == "pi4")
+{
   pi4();
+}
+
+offset= (part == "piZero") ? [10, -13, 0] : [0,0,0];
+
+if( hat == "hifiberryDacPlus")
+  hifiberryDacPlus(offset, header);
+else if( hat == "speakerPhat")
+  speakerPhat(offset);
+  
