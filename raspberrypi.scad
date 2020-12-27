@@ -276,38 +276,42 @@ module pi4()
   }
 }
 
-if( part == "pi3")
+module show( part, hat)
 {
-  pi3();
-}
-else if( part == "hifiberryDacPlus")
-{
-  hifiberryDacPlus(header);
-}
-else if( part == "pi3_hifiberryDacPlus")
-{
-  pi3();
-  hifiberryDacPlus(header);
-}
-else if( part == "piZero")
-{
-  zero(header ? (headerDown ? -1 : 1) : 0);
-}
-else if( part == "speakerPhat")
-{
-  speakerPhat();
-}
-else if( part == "pi4")
-{
-  pi4();
+  if( part == "pi3")
+  {
+    pi3();
+  }
+  else if( part == "hifiberryDacPlus")
+  {
+    hifiberryDacPlus(header);
+  }
+  else if( part == "pi3_hifiberryDacPlus")
+  {
+    pi3();
+    hifiberryDacPlus(header);
+  }
+  else if( part == "piZero")
+  {
+    zero(header ? (headerDown ? -1 : 1) : 0);
+  }
+  else if( part == "speakerPhat")
+  {
+    speakerPhat();
+  }
+  else if( part == "pi4")
+  {
+    pi4();
+  }
+
+  offset= (part == "piZero") ? [10, -13, 0] : [0,0,0];
+
+  if( hat == "hifiberryDacPlus")
+    hifiberryDacPlus(offset, header);
+  else if( hat == "speakerPhat")
+    speakerPhat(offset);
+  else if( hat == "raspBee2")
+    raspbee2(offset);
 }
 
-offset= (part == "piZero") ? [10, -13, 0] : [0,0,0];
-
-if( hat == "hifiberryDacPlus")
-  hifiberryDacPlus(offset, header);
-else if( hat == "speakerPhat")
-  speakerPhat(offset);
-else if( hat == "raspBee2")
-  raspbee2(offset);
-  
+show(part, hat);
