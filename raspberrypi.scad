@@ -6,10 +6,10 @@
 $fn=100;
 
 // Which one would you like to see?
-part = "piZero"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,piZero:Raspberry PI Zero,pi4:Raspberry PI4]
+part = "pi5cooler"; // [pi3:Raspberry PI3,hifiberryDacPlus:HifiBerry DAC+,piZero:Raspberry PI Zero,pi4:Raspberry PI4,pi5:Raspberry PI5,pi5cooler: Raspberry PI5 with Cooler]
 
 // Show a Hat on PI
-hat = "raspBee2"; // [hifiberryDacPlus:HifiBerry DAC+,speakerPhat:Pimoroni Speaker pHAT,raspBee2: RaspBee 2 ZigBee Hat]
+hat = ""; // [hifiberryDacPlus:HifiBerry DAC+,speakerPhat:Pimoroni Speaker pHAT,raspBee2: RaspBee 2 ZigBee Hat]
 
 // Show Header
 header = true; // true:Show Header;false:Don't show Header
@@ -276,6 +276,124 @@ module pi4()
   }
 }
 
+module pi5()
+{
+  // PCB
+  color("limegreen") difference()
+  {
+    hull()
+    {
+      translate([-(85-6)/2,-(56-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([-(85-6)/2, (56-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([ (85-6)/2,-(56-6)/2,0]) cylinder(r=3, h=1.4 );
+      translate([ (85-6)/2, (56-6)/2,0]) cylinder(r=3, h=1.4 );
+    }
+    translate([-85/2+3.5,-49/2,-1]) cylinder(d=2.75, h=3);
+    translate([-85/2+3.5, 49/2,-1]) cylinder(d=2.75, h=3);
+    translate([58-85/2+3.5,-49/2,-1]) cylinder(d=2.75, h=3);
+    translate([58-85/2+3.5, 49/2,-1]) cylinder(d=2.75, h=3);
+
+    translate([-85/2+3.5  , 6-49/2,-1]) cylinder(d=3, h=3);
+    translate([58-85/2+3.5,-6+49/2,-1]) cylinder(d=3, h=3);
+  }
+
+  // Header
+  translate([3.5-85/2+29-10*2.54,49/2-2.54,1.4]) header(20,2);
+
+  // PoE Header
+  translate([58-85/2+3.5-2.54,-49/2-2.54+6,1.4]) header(2,2);
+  
+  color("ivory") 
+  {
+    // Fan Connector
+    translate([64.75-85/2, 49/2-6.5/2, 1.4]) cube([3, 6.5,5]);
+    
+    // RTC Battery
+    translate([-85/2-4+21,-56/2-3+7,1.4]) cube([4,3,4]);
+    
+    // UART
+    translate([-85/2-5+35,-56/2-3+5,1.4]) cube([5,3,4]);
+  }
+  
+  // On/Off Button
+  color("silver") translate([-85/2,-12,1.4]) cube([3,4,3]);
+  color("ivory") translate([-85/2-.5,-10,3]) rotate([0,90]) cylinder(d=1.75, h=0.5);
+  
+  translate([-85/2,-56/2,1.4])
+  {
+    color("silver")
+    {
+      // Ethernet
+      translate([85-19, 10.2-16/2,0]) cube([21,16,13.5]);
+      // USB
+      translate([85-15, 29.1-13/2,0]) cube([17,13,14.5]);
+      translate([85-15, 47  -13/2,0]) cube([17,13,14.5]);
+      // USB C
+      translate([11.2 - 8.94/2,-1.5,0]) cube([8.94,8.75,3.16]);
+      // Mini HDMI
+      translate([25.8 -6.5/2,-1.5,0]) cube([6.5,7.5,2.9]);
+      translate([39.2 -6.5/2,-1.5,0]) cube([6.5,7.5,2.9]);
+    }
+    color("darkgrey")
+    {
+      // Cam/Display 
+      translate([48   ,1.1,0]) cube([2,17,5.5]);
+      translate([54.25,1.1,0]) cube([2,17,5.5]);
+      // PCI Express 
+      translate([1.1,23.25,0]) cube([2,13.5,5.5]);
+    }
+    // Micro SD Card
+    color("silver") translate([0,22,-2.9]) cube([13,14,1.5]);
+    color("darkgrey") translate([-2.4,23.5,-2.65]) cube([2.4,11,1]);
+  }
+  
+ 
+}
+
+module pi5ActiveCooler()
+{
+  translate([-39, -18.5,  4.9])
+  {
+    color("silver")
+    {
+      difference()
+      {
+        union()
+        {
+          cylinder(d=6, h=1.2);
+          rotate([0,0,45]) translate([0,-3]) cube([10,6,1.2]);
+          
+          hull()
+          {
+            translate([58, 37]) cylinder(d=6, h=1.2);
+            translate([58, 12]) cylinder(d=6, h=1.2);
+
+            translate([30, 37]) cylinder(d=6, h=1.2);
+            translate([30, 12]) cylinder(d=6, h=1.2);
+          }    
+          
+          translate([31.5, 2.5]) 
+          {
+            cylinder(d=6, h=1.2);
+            rotate([0,0,45]) translate([0,-3]) cube([15,20,1.2]);
+          }
+          
+          translate([3.5,-0.5]) cube([28,40.5,1.2]);
+        }
+        
+        translate([58, 37,-1]) cylinder(d=2.5, h=4);
+        translate([ 0,  0,-1]) cylinder(d=2.5, h=4);
+      }
+      
+      translate([4,0,1.2])
+        for(x=[0:3.5:20],y=[0:4.6:40])
+          translate([x,y]) cube([1.2, 2.6, 7.8]);
+    }
+    
+    color("darkgrey") translate([24.5,9.25,1.2]) cube([30.5,30.5,7.8]);
+  }
+}
+
 module show( part, hat)
 {
   if( part == "pi3")
@@ -302,6 +420,15 @@ module show( part, hat)
   else if( part == "pi4")
   {
     pi4();
+  }
+  else if( part == "pi5")
+  {
+    pi5();
+  }
+  else if( part == "pi5cooler")
+  {
+    pi5();
+    pi5ActiveCooler();
   }
 
   offset= (part == "piZero") ? [10, -13, 0] : [0,0,0];
