@@ -17,6 +17,8 @@ header = true; // true:Show Header;false:Don't show Header
 // Header Up/Down for Pi Zero
 headerDown = false; //true: Header down (Only Zero): false Header up
 
+pineberryPiM2 = true; // true: Show Pineberry M2 HAT
+
 module header(pins, rows)
 {
   color("darkgrey") cube([2.54*pins,2.54*rows,2.54]);
@@ -394,6 +396,42 @@ module pi5ActiveCooler()
   }
 }
 
+module pineberryPiM2()
+{
+  translate([-2.5,0,-7.4])
+  {
+    // PCB
+    color("limegreen") difference()
+    {    
+      hull()
+      {
+        translate([-(90-6)/2,-(56-6)/2]) cylinder(r=3,h=1.4);
+        translate([-(90-6)/2, (56-6)/2]) cylinder(r=3,h=1.4);
+        translate([ (90-6)/2,-(56-6)/2]) cylinder(r=3,h=1.4);
+        translate([ (90-6)/2, (56-6)/2]) cylinder(r=3,h=1.4);
+      }
+    
+      translate([90/2-23.5   ,-49/2,-1]) cylinder(d=2.75, h=3);
+      translate([90/2-23.5   , 49/2,-1]) cylinder(d=2.75, h=3);
+      translate([90/2-23.5-58,-49/2,-1]) cylinder(d=2.75, h=3);
+      translate([90/2-23.5-58, 49/2,-1]) cylinder(d=2.75, h=3);
+      
+      translate([   36.5-90/2, 0, -1]) cylinder(d=4, h=3);
+      translate([12+36.5-90/2, 0, -1]) cylinder(d=4, h=3);
+      translate([50+36.5-90/2, 0, -1]) cylinder(d=4, h=3);
+    }
+    
+    // PCI Express 
+    color("ivory") translate([4-90/2, -4.5,1.4]) cube([5.5, 12.5, 2.5]);
+    
+    // M2
+    color("darkgrey") translate([2.5-90/2,-21.5/2,-3]) cube([7.5, 21.5, 3]);
+    
+    // Power
+    color("ivory") translate([-15, 56/2-6.5,-4]) cube([9,6,4]);
+  }
+}
+
 module show( part, hat)
 {
   if( part == "pi3")
@@ -439,6 +477,9 @@ module show( part, hat)
     speakerPhat(offset);
   else if( hat == "raspBee2")
     raspbee2(offset);
+    
+  if(pineberryPiM2)
+    pineberryPiM2();
 }
 
 show(part, hat);
